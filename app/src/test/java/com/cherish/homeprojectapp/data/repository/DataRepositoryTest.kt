@@ -25,14 +25,11 @@ import java.lang.Exception
 class DataRepositoryTest{
     private lateinit var repository: DataRepository
     private val testDispatcher = TestCoroutineDispatcher()
-    var e: Throwable? = null
 
     private val apiService = mock<ApiService>()
-//    private lateinit var repository: DataRepository
-//
+
     @Before
     fun setUp(){
-
         repository = DataRepository(apiService, testDispatcher)
     }
 
@@ -43,10 +40,9 @@ class DataRepositoryTest{
         list.add(response)
 
         // Mock API Service
-        whenever(apiService.getOrganizations()) doReturn list
-//        apiService.stub {
-//            onBlocking { getOrganizations() } doReturn list
-//        }
+        apiService.stub {
+            onBlocking { getOrganizations() } doReturn list
+        }
 
         //Test and Verify
         repository.getOrganization().test {
@@ -57,42 +53,5 @@ class DataRepositoryTest{
         }
     }
 
-//    @Test
-//    fun `test that get organization emits error`() = runBlockingTest {
-//        val list = mutableListOf<OrganizationResponse>()
-//        val response = OrganizationResponse("", "","","", 9,"","kjjjjjhhjhhj", "", "jnjhjhjhjhbbh", "kjhhhjhjhh","kjhkhjhjhjh","bjhbhjgfxghvj")
-//        list.add(response)
-//      val throwable = Throwable()
-//       // whenever(apiService.getOrganizations()) doReturn list
-//
-//
-//        // Mock API Service
-//        apiService.stub {
-//            onBlocking { getOrganizations() } doAnswer  {
-//
-//
-//            }
-//
-//        }
-//
-//
-//        //Test and Verify
-//          repository.getOrganization().test  {
-//
-//              assertThat(awaitItem()).isEqualTo(ResponseManager.Loading(true))
-//
-//          //    awaitItem()// emitting on start
-//              assertThat(awaitItem()).isEqualTo(ResponseManager.Failure())
-//
-////            assertThat(awaitItem()).isEqualTo(ResponseManager.Loading(true)) // emitting on start
-////            assertThat(awaitItem()).isEqualTo(ResponseManager.Success(list))    // emitting on success
-////            assertThat(awaitItem()).isEqualTo(ResponseManager.Loading(false)) // emitting on completion
-//           cancelAndConsumeRemainingEvents()
-//        }
-//
-//
-//
-//
-//    }
-//
+
 }
